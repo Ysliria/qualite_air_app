@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { AirQualityService } from "@/services/AirQuality.service";
 export default {
   props: {
     city: {
@@ -22,6 +23,8 @@ export default {
     };
   },
   mounted() {
+    AirQualityService.getAirQuality(this.city.name);
+
     if (this.city.iqa <= 30) {
       this.color = 'pollution-faible';
     }
