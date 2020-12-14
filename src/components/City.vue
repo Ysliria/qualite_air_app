@@ -22,8 +22,10 @@ export default {
       color: ''
     };
   },
-  mounted() {
-    AirQualityService.getAirQuality(this.city.name);
+  async mounted() {
+    const infosCity = await AirQualityService.getAirQuality(this.city.name);
+
+    this.city.iqa = infosCity.aqi;
 
     if (this.city.iqa <= 30) {
       this.color = 'pollution-faible';

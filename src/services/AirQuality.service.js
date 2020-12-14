@@ -4,10 +4,14 @@ import axios from "axios";
 const baseUrl = "http://api.waqi.info/feed";
 
 export const AirQualityService = {
-    getAirQuality(cityName) {
+    async getAirQuality(cityName) {
         const url = baseUrl + "/" + cityName + "/?token=" + config.token;
-        const result = axios.get(url);
 
-        console.log(result);
+        try {
+            const result = await axios.get(url);
+            return result.data.data;
+        } catch (error) {
+            alert("erreur !");
+        }
     }
 }
