@@ -1,15 +1,20 @@
 <template>
   <div>
-    <b-card :title="city.name" :class="color">
-      <b-card-text>
+    <b-card :title="city.name" :class="color + ' cityCard'">
+      <b-card-text v-if="!loading">
         Qualité de l'air {{ city.iqa }}
       </b-card-text>
+
+      <b-button @click="deleteCityAction" variant="secondary">Supprimer</b-button>
+
+      <b-spinner v-if="loading" variant="primary" label="Spinning"></b-spinner>
     </b-card>
   </div>
 </template>
 
 <script>
-import { AirQualityService } from "@/services/AirQuality.service";
+import {AirQualityService} from '@/services/AirQuality.service';
+
 export default {
   props: {
     city: {
@@ -19,13 +24,15 @@ export default {
   },
   data() {
     return {
-      color: ''
+      color:   '',
+      loading: false
     };
   },
   async mounted() {
+    this.loading    = true;
     const infosCity = await AirQualityService.getAirQuality(this.city.name);
-
-    this.city.iqa = infosCity.aqi;
+    this.loading    = false;
+    this.city.iqa   = infosCity.aqi;
 
     if (this.city.iqa <= 30) {
       this.color = 'pollution-faible';
@@ -38,23 +45,32 @@ export default {
     if (this.city.iqa > 50) {
       this.color = 'pollution-forte';
     }
-  }
+  },
+  methods: {
+    deleteCityAction() {
+      this.$emit('deleteCity', this.city);
+    }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-  .pollution-faible {
-    background: green;
-    color: white;
-  }
+.pollution-faible {
+  background: green;
+  color: white;
+}
 
-  .pollution-medium {
-    background: orange;
-    color: white;
-  }
+.pollution-medium {
+  background: orange;
+  color: white;
+}
 
-  .pollution-forte {
-    background: red;
-    color: white;
-  }
+.pollution-forte {
+  background: red;
+  color: white;
+}
+
+.cityCard {
+  margin-bottom: 2em;
+}
 </style>

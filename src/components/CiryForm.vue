@@ -4,13 +4,13 @@
       Ajouter une ville :
     </col-sm-2>
 
-    <div class="col-sm-3">
+    <b-col sm="3">
       <input type="text" id="cityField" class="form-control" v-model="newCity">
-    </div>
+    </b-col>
 
-    <div class="col-sm-2">
+    <b-col sm="2">
       <b-button @click="addCityAction" class="primary">Ajouter</b-button>
-    </div>
+    </b-col>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   methods: {
     addCityAction() {
       if (this.newCity) {
-        console.log('Ajouter', this.newCity);
+        this.$emit("cityAddEvent", this.newCity);
       }
     }
   },
